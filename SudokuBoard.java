@@ -145,6 +145,19 @@ public class SudokuBoard {
 
         return true;
     }
+    // Base cases complete 
+    public boolean solve() {
+      if(isValid() == false) {
+         return false; 
+      }
+      else if (isSolved() == true) {
+         return true; 
+      }
+      
+      return true; 
+    } 
+    
+    
    // returns a string
     public String toString() {
         String result = "";
