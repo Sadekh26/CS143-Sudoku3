@@ -154,7 +154,21 @@ public class SudokuBoard {
          return true; 
       }
       
-      return true; 
+      else {
+         for (int r = 0; r < board.length; r++) {
+            for (int c = 0; c < board[0].length; c++) {
+               if(board[r][c] == 0) {
+                  for(int i = 1; i <= 9; i++) {
+                      board[r][c] = i;
+                      if(solve() == true) {
+                        return true;
+                      } else {
+                        board[r][c] = 0;
+                      }   
+                  }
+               }
+            }
+      }
     } 
     
     
