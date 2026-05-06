@@ -7,7 +7,8 @@ public class SudokuBoard {
     public SudokuBoard() {
         board = new int[9][9];
     }
-
+   
+    // Generates board
     public SudokuBoard(String fileName) {
         this();
         try {
@@ -29,7 +30,8 @@ public class SudokuBoard {
             System.out.println("Error: File not found.");
         }
     }
-
+   
+   // Checks places in board to see if valid
     public boolean isValid() {
         if (!checkNumbers())
             return false;
@@ -42,7 +44,8 @@ public class SudokuBoard {
 
         return true;
     }
-
+   
+   // Checks if numbers are between 1-9
     private boolean checkNumbers() {
         for (int r = 0; r < board.length; r++) {
             for (int c = 0; c < board[0].length; c++) {
@@ -55,6 +58,7 @@ public class SudokuBoard {
         return true;
     }
 
+   //Checks all rows 
     private boolean checkRow() {
         for (int r = 0; r < board.length; r++) {
             Set < Integer > set = new HashSet < > ();
@@ -71,7 +75,8 @@ public class SudokuBoard {
 
         return true;
     }
-
+   
+   //Checks all columns
     private boolean checkCol() {
         for (int r = 0; r < board.length; r++) {
             Set < Integer > set = new HashSet < > ();
@@ -87,7 +92,7 @@ public class SudokuBoard {
 
         return true;
     }
-
+   // checks the mini square
     private boolean checkBox() {
         for (int boxRow = 0; boxRow < 3; boxRow++) {
             for (int boxCol = 0; boxCol <
@@ -110,7 +115,7 @@ public class SudokuBoard {
 
         return true;
     }
-
+   // checks to see if board is solved
     public boolean isSolved() {
         if (!isValid())
             return false;
@@ -140,7 +145,7 @@ public class SudokuBoard {
 
         return true;
     }
-
+   // returns a string
     public String toString() {
         String result = "";
         String line = "+-------+-------+-------+\n";
