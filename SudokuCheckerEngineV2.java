@@ -106,3 +106,21 @@ public class SudokuCheckerEngineV2 {
          System.out.println("**** HORRAY: ALL TESTS PASSED ****");
    }
 }
+
+/*
+
+# PROGRAM OUTPUT
+
+//Engine Checker Tests 
+
+ Checking empty board...passed.
+ Checking incomplete, valid board...passed.
+ Checking complete, valid board...passed.
+ Checking dirty data board...passed.
+ Checking row violating board...passed.
+ Checking col violating board...passed.
+ Checking row&col violating board...passed.
+ Checking mini-square violating board...passed.
+ **** HORRAY: ALL TESTS PASSED ****
+ 
+*/ 

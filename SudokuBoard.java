@@ -2,152 +2,153 @@ import java.util.*;
 import java.io.*;
 
 public class SudokuBoard {
-    private int[][] board;
+   private int[][] board;
 
-    public SudokuBoard() {
-        board = new int[9][9];
-    }
-   
-    // Generates board
-    public SudokuBoard(String fileName) {
-        this();
-        try {
-            Scanner console = new Scanner(new File(fileName));
-            for (int r = 0; r < board.length; r++) {
-                if (console.hasNext()) {
-                    String line = console.next();
-                    for (int c = 0; c < board[0].length; c++) {
-                        char value = line.charAt(c);
-                        if (value == '.') {
-                            board[r][c] = 0;
-                        } else {
-                            board[r][c] = value - '0';
-                        }
-                    }
-                }
+   public SudokuBoard() {
+      board = new int[9][9];
+   }
+  
+   // Generates board
+   public SudokuBoard(String fileName) {
+      this();
+      try {
+         Scanner console = new Scanner(new File(fileName));
+         for (int r = 0; r < board.length; r++) {
+            if (console.hasNext()) {
+               String line = console.next();
+               for (int c = 0; c < board[0].length; c++) {
+                  char value = line.charAt(c);
+                  if (value == '.') {
+                     board[r][c] = 0;
+                  } else {
+                     board[r][c] = value - '0';
+                  }
+               }
             }
-        } catch (FileNotFoundException e) {
-            System.out.println("Error: File not found.");
-        }
-    }
+         }
+      } catch (FileNotFoundException e) {
+         System.out.println("Error: File not found.");
+      }
+   }
+  
+  // Checks places in board to see if valid
+   public boolean isValid() {
+      if (!checkNumbers())
+         return false;
+      if (!checkRow())
+         return false;
+      if (!checkCol())
+         return false;
+      if (!checkBox())
+         return false;
    
-   // Checks places in board to see if valid
-    public boolean isValid() {
-        if (!checkNumbers())
-            return false;
-        if (!checkRow())
-            return false;
-        if (!checkCol())
-            return false;
-        if (!checkBox())
-            return false;
-
-        return true;
-    }
-   
-   // Checks if numbers are between 1-9
-    private boolean checkNumbers() {
-        for (int r = 0; r < board.length; r++) {
-            for (int c = 0; c < board[0].length; c++) {
-                if (board[r][c] < 0 || board[r][c] > 9) {
-                    return false;
-                }
+      return true;
+   }
+  
+  // Checks if numbers are between 1-9
+   private boolean checkNumbers() {
+      for (int r = 0; r < board.length; r++) {
+         for (int c = 0; c < board[0].length; c++) {
+            if (board[r][c] < 0 || board[r][c] > 9) {
+               return false;
             }
-        }
+         }
+      }
+   
+      return true;
+   }
 
-        return true;
-    }
-
-   //Checks all rows 
-    private boolean checkRow() {
-        for (int r = 0; r < board.length; r++) {
+  //Checks all rows 
+   private boolean checkRow() {
+      for (int r = 0; r < board.length; r++) {
+         Set < Integer > set = new HashSet < > ();
+         for (int c = 0; c < board[0].length; c++) {
+            int val = board[r][c];
+            if (val != 0) {
+               if (set.contains(val))
+                  return false;
+               set.add(val);
+            }
+         }
+      }
+   
+   
+      return true;
+   }
+  
+  //Checks all columns
+   private boolean checkCol() {
+      for (int r = 0; r < board.length; r++) {
+         Set < Integer > set = new HashSet < > ();
+         for (int c = 0; c < board[0].length; c++) {
+            int val = board[c][r];
+            if (val != 0) {
+               if (set.contains(val))
+                  return false;
+               set.add(val);
+            }
+         }
+      }
+   
+      return true;
+   }
+  // checks the mini square
+   private boolean checkBox() {
+      for (int boxRow = 0; boxRow < 3; boxRow++) {
+         for (int boxCol = 0; boxCol <
+            3; boxCol++) { // checks the first, second, and third box
             Set < Integer > set = new HashSet < > ();
-            for (int c = 0; c < board[0].length; c++) {
-                int val = board[r][c];
-                if (val != 0) {
-                    if (set.contains(val))
+            for (int r = 0; r < 3; r++) {
+               for (int c = 0; c <
+                  3; c++) { // checks the first row, then first column of the box
+                  int val = board[boxRow * 3 + r][boxCol * 3 +
+                     c]; // adds the value of the board at the location of [(if in the case box row 0 and row 1 of the box then (0*3+1))]
+                  if (val != 0) {
+                     if (set.contains(val))
                         return false;
-                    set.add(val);
-                }
+                     set.add(val);
+                  }
+               }
             }
-        }
-
-
-        return true;
-    }
+         }
+      }
    
-   //Checks all columns
-    private boolean checkCol() {
-        for (int r = 0; r < board.length; r++) {
-            Set < Integer > set = new HashSet < > ();
-            for (int c = 0; c < board[0].length; c++) {
-                int val = board[c][r];
-                if (val != 0) {
-                    if (set.contains(val))
-                        return false;
-                    set.add(val);
-                }
+      return true;
+   }
+  // checks to see if board is solved
+   public boolean isSolved() {
+      if (!isValid())
+         return false;
+   
+      Map < Integer, Integer > map = new HashMap < > ();
+   
+      for (int r = 0; r < board.length; r++) {
+         for (int c = 0; c < board[0].length; c++) {
+            int val = board[r][c];
+         
+            if (val != 0) {
+               if (map.containsKey(val)) {
+                  map.put(val, map.get(val) + 1);
+               } else {
+                  map.put(val, 1);
+               }
             }
-        }
-
-        return true;
-    }
-   // checks the mini square
-    private boolean checkBox() {
-        for (int boxRow = 0; boxRow < 3; boxRow++) {
-            for (int boxCol = 0; boxCol <
-                3; boxCol++) { // checks the first, second, and third box
-                Set < Integer > set = new HashSet < > ();
-                for (int r = 0; r < 3; r++) {
-                    for (int c = 0; c <
-                        3; c++) { // checks the first row, then first column of the box
-                        int val = board[boxRow * 3 + r][boxCol * 3 +
-                        c]; // adds the value of the board at the location of [(if in the case box row 0 and row 1 of the box then (0*3+1))]
-                        if (val != 0) {
-                            if (set.contains(val))
-                                return false;
-                            set.add(val);
-                        }
-                    }
-                }
-            }
-        }
-
-        return true;
-    }
-   // checks to see if board is solved
-    public boolean isSolved() {
-        if (!isValid())
+         }
+      }
+   
+      for (int num = 1; num <= 9; num++) {
+         if (!map.containsKey(num) || map.get(num) !=
+            9) { // this loop goes from 1-9 and checks if the map contains the number and the occurrences the number came up
             return false;
-
-        Map < Integer, Integer > map = new HashMap < > ();
-
-        for (int r = 0; r < board.length; r++) {
-            for (int c = 0; c < board[0].length; c++) {
-                int val = board[r][c];
-
-                if (val != 0) {
-                    if (map.containsKey(val)) {
-                        map.put(val, map.get(val) + 1);
-                    } else {
-                        map.put(val, 1);
-                    }
-                }
-            }
-        }
-
-        for (int num = 1; num <= 9; num++) {
-            if (!map.containsKey(num) || map.get(num) !=
-                9) { // this loop goes from 1-9 and checks if the map contains the number and the occurrences the number came up
-                return false;
-            }
-        }
-
-        return true;
-    }
-    // Base cases complete 
-    public boolean solve() {
+         }
+      }
+   
+      return true;
+   }
+   // Base cases complete 
+   public boolean solve() {
       if(isValid() == false) {
+         //System.out.println("Board is in an invalid state"); //* SHOULD be in main 
          return false; 
       }
       else if (isSolved() == true) {
@@ -157,43 +158,48 @@ public class SudokuBoard {
       else {
          for (int r = 0; r < board.length; r++) {
             for (int c = 0; c < board[0].length; c++) {
+            
                if(board[r][c] == 0) {
                   for(int i = 1; i <= 9; i++) {
-                      board[r][c] = i;
-                      if(solve() == true) {
+                     board[r][c] = i;
+                     if(solve() == true) {
                         return true;
-                      } else {
+                     } 
+                     else {
                         board[r][c] = 0;
-                      }   
+                     }   
                   }
+                  return false;
                }
             }
+         }
       }
-    } 
-    
-    
-   // returns a string
-    public String toString() {
-        String result = "";
-        String line = "+-------+-------+-------+\n";
-
-        for (int r = 0; r < board.length; r++) {
-            if (r % 3 == 0) {
-                result = result + line;
+      return false;
+   } 
+   
+   
+  // returns a string
+   public String toString() {
+      String result = "";
+      String line = "+-------+-------+-------+\n";
+   
+      for (int r = 0; r < board.length; r++) {
+         if (r % 3 == 0) {
+            result = result + line;
+         }
+         for (int c = 0; c < board[0].length; c++) {
+            if (c % 3 == 0) {
+               result = result + "| ";
             }
-            for (int c = 0; c < board[0].length; c++) {
-                if (c % 3 == 0) {
-                    result = result + "| ";
-                }
-                if (board[r][c] == 0) {
-                    result = result + "- ";
-                } else {
-                    result = result + board[r][c] + " ";
-                }
+            if (board[r][c] == 0) {
+               result = result + "- ";
+            } else {
+               result = result + board[r][c] + " ";
             }
-            result = result + "|\n";
-        }
-        result = result + line;
-        return result;
-    }
+         }
+         result = result + "|\n";
+      }
+      result = result + line;
+      return result;
+   }
 }
