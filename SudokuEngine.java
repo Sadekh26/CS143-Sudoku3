@@ -3,9 +3,13 @@ import java.io.*;
 
 public class SudokuEngine {
    public static void main(String[] args) {
-      String fileName = "boards/data1.sdk";
+      String fileName = "fast-solve.sdk";
       SudokuBoard board = new SudokuBoard(fileName);  
-      System.out.println(board); 
+      System.out.println(board);
+      if(!board.isValid()) { 
+         board.solve(); 
+         System.out.println(board);
+      }
    }
 }
 
