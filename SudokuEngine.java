@@ -6,7 +6,7 @@ public class SudokuEngine {
       String fileName = "fast-solve.sdk";
       SudokuBoard board = new SudokuBoard(fileName);  
       System.out.println(board);
-      if(!board.isValid()) { 
+      if(board.isValid()) { 
          board.solve(); 
          System.out.println(board);
       }
