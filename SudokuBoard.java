@@ -147,11 +147,11 @@ public class SudokuBoard {
    }
    // Base cases complete 
    public boolean solve() {
-      if(isValid() == false) {
+      if(!isValid()) {
          //System.out.println("Board is in an invalid state"); //* SHOULD be in main 
          return false; 
       }
-      else if (isSolved() == true) {
+      else if (isSolved()) {
          return true; 
       }
       
